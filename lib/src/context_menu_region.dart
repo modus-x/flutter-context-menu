@@ -12,12 +12,17 @@ class ContextMenuRegion extends StatelessWidget {
       required this.child,
       required this.contextMenu,
       this.isEnabled = true,
-      this.behavior = const [ContextMenuShowBehavior.secondaryTap, ContextMenuShowBehavior.longPress]})
+      this.hitTestBehavior = HitTestBehavior.opaque,
+      this.behavior = const [
+        ContextMenuShowBehavior.secondaryTap,
+        ContextMenuShowBehavior.longPress
+      ]})
       : super(key: key);
   final Widget child;
   final Widget contextMenu;
   final bool isEnabled;
   final List<ContextMenuShowBehavior> behavior;
+  final HitTestBehavior hitTestBehavior;
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +33,14 @@ class ContextMenuRegion extends StatelessWidget {
 
     if (isEnabled == false) return child;
     return GestureDetector(
-      behavior: HitTestBehavior.translucent,
+      behavior: hitTestBehavior,
       onTap: behavior.contains(ContextMenuShowBehavior.tap) ? showMenu : null,
-      onSecondaryTap: behavior.contains(ContextMenuShowBehavior.secondaryTap) ? showMenu : null,
-      onLongPress: behavior.contains(ContextMenuShowBehavior.longPress) ? showMenu : null,
+      onSecondaryTap: behavior.contains(ContextMenuShowBehavior.secondaryTap)
+          ? showMenu
+          : null,
+      onLongPress: behavior.contains(ContextMenuShowBehavior.longPress)
+          ? showMenu
+          : null,
       child: child,
     );
   }
